@@ -1,0 +1,134 @@
+<!DOCTYPE>
+<html>
+		<head>
+			<title>Primeiro</title>
+
+		<style type="text/css">
+			canvas{
+
+				border:1px solid #000;
+
+			}
+			</style>
+		</head>
+
+
+<body onload="inicializar()">
+<canvas id="canvas" width="600" height="500">
+Navegador não suporta
+</canvas>	
+<script type="text/javascript">
+
+var barraAltura, barraLargura, jogadorposicaoX, velocidadejogador, bolaDiametro,bolaposicaoX,bolaposicaoY,pontosJogador,colisao;
+
+function inicializar(){
+
+
+barraAltura = 15;
+barraLargura = 200;
+pontosJogador = 0;
+
+jogadorposicaoX = (canvas.width - barraLargura)/2;
+velocidadejogador =20;
+
+canvas = document.getElementById("canvas");
+context = canvas.getContext("2d");
+
+bolaDiametro = 10;
+bolaposicaoX = Math.random() * 600;
+bolaposicaoY = 0;
+
+
+document.addEventListener('keydown', keyDown);
+
+setInterval(gameLoop, 30);
+				
+			
+}
+function keyDown(e) 
+	{
+    if(e.keyCode == 37 ){  
+
+if (jogadorposicaoX > 0){
+    
+        jogadorposicaoX -= velocidadejogador;
+
+    }
+	}
+    if(e.keyCode == 39)
+    {	
+
+    	if (jogadorposicaoX < canvas.width - barraLargura){
+
+        jogadorposicaoX += velocidadejogador;
+	}
+
+}
+
+}
+  
+
+function gameLoop(){
+
+context.clearRect(0,0,canvas.width,canvas.height);
+
+context.fillRect(jogadorposicaoX + 68, canvas.height - barraAltura - 70, barraLargura - 150, barraAltura);
+
+context.fillRect(jogadorposicaoX + 68, canvas.height - barraAltura - 50, barraLargura - 150, barraAltura);
+
+context.fillRect(jogadorposicaoX + 68, canvas.height - barraAltura - 30, barraLargura - 150, barraAltura);
+
+context.fillRect(jogadorposicaoX + 45, canvas.height - barraAltura - 10, barraLargura - 100, barraAltura);
+
+context.fillRect(jogadorposicaoX + 20, canvas.height - barraAltura , barraLargura - 50, barraAltura);
+
+context.beginPath();
+
+context.arc(bolaposicaoX, bolaposicaoY, bolaDiametro, 0, Math.PI * 2, true);
+
+context.fill();
+
+
+//Gravidade
+
+if( bolaposicaoY > (canvas.height) ){
+
+	bolaposicaoY =  0;
+
+	bolaposicaoX = Math.random() * 600;
+
+	colisao = false;
+
+
+}
+
+
+if(bolaposicaoY <=(canvas.height)){
+
+bolaposicaoY+=velocidadejogador;
+
+
+}
+
+//Colisao
+
+if((bolaposicaoX > jogadorposicaoX && (bolaposicaoX < jogadorposicaoX + barraLargura)) && bolaposicaoY >= canvas.height && colisao == false){
+
+
+pontosJogador++;
+
+colisao = true;
+
+} 
+
+context.font = "32pt Tahoma";
+context.color = "red";
+
+context.fillText(pontosJogador, canvas.width - 70, 50);
+}
+
+
+</script>
+
+</body>
+</html>
