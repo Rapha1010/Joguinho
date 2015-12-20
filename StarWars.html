@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 		<head>
 			<title>Primeiro</title>
@@ -7,6 +7,7 @@
 			canvas{
 
 				border:1px solid #000;
+				background:black;
 
 			}
 			</style>
@@ -19,33 +20,33 @@ Navegador não suporta
 </canvas>	
 <script type="text/javascript">
 
-var barraAltura, barraLargura, jogadorposicaoX, velocidadejogador, bolaDiametro,bolaposicaoX,bolaposicaoY,danosJogador,colisao, pause,time;
+var naveAltura, naveLargura, navePosicaoX, velocidade, laserDiametro,laserposicaoX,laserposicaoY,danosJogador,colisao, pause,time;
 
 function inicializar(){
 
 
 pause=false;
-barraAltura = 15;
-barraLargura = 200;
+naveAltura = 15;
+naveLargura = 200;
 danosJogador = 0;
 time=0;
 
 
 
-jogadorposicaoX = (canvas.width - barraLargura)/2;
-velocidadejogador =20;
+navePosicaoX = (canvas.width - naveLargura)/2;
+velocidade =20;
 
 canvas = document.getElementById("canvas");
 context = canvas.getContext("2d");
 
-bolaDiametro = 10;
-bolaposicaoX = Math.random() * 900;
-bolaposicaoY = 0;
+laserDiametro = 10;
+laserposicaoX = Math.random() * 900;
+laserposicaoY = 0;
 
 
 document.addEventListener('keydown', keyDown);
 
-setInterval(gameLoop, 30);
+setInterval(gLoop, 30);
 				
 			
 }
@@ -53,18 +54,18 @@ function keyDown(e)
 	{
     if(e.keyCode == 37 ){  
 
-if (jogadorposicaoX > 0){
+if (navePosicaoX > 0){
     
-        jogadorposicaoX -= velocidadejogador;
+        navePosicaoX -= velocidade;
 
     }
 	}
     if(e.keyCode == 39)
     {	
 
-    	if (jogadorposicaoX < canvas.width - barraLargura + 25){
+    	if (navePosicaoX < canvas.width - naveLargura + 25){
 
-        jogadorposicaoX += velocidadejogador;
+        navePosicaoX += velocidade;
 	}
 
 
@@ -73,27 +74,40 @@ if (jogadorposicaoX > 0){
 }
   
 
-function gameLoop(){
+function gLoop(){
 
 if(!pause){
 
 context.clearRect(0,0,canvas.width,canvas.height);
 
-context.fillStyle = 'blue';
 
-context.fillRect(jogadorposicaoX + 68, canvas.height - barraAltura - 70, barraLargura - 150, barraAltura);
+// Criação da X-wing
 
-context.fillRect(jogadorposicaoX + 68, canvas.height - barraAltura - 50, barraLargura - 150, barraAltura);
+context.fillStyle = 'gray';
 
-context.fillRect(jogadorposicaoX + 68, canvas.height - barraAltura - 30, barraLargura - 150, barraAltura);
+context.fillRect(navePosicaoX + 68, canvas.height - naveAltura - 70, naveLargura - 150, naveAltura);
 
-context.fillRect(jogadorposicaoX + 45, canvas.height - barraAltura - 10, barraLargura - 100, barraAltura);
+context.fillStyle = 'red';
 
-context.fillRect(jogadorposicaoX + 20, canvas.height - barraAltura , barraLargura - 50, barraAltura);
+context.fillRect(navePosicaoX + 68, canvas.height - naveAltura - 50, naveLargura - 150, naveAltura);
+
+context.fillStyle = 'gray';
+
+context.fillRect(navePosicaoX + 68, canvas.height - naveAltura - 30, naveLargura - 150, naveAltura);
+
+context.fillStyle = 'red';
+
+context.fillRect(navePosicaoX + 45, canvas.height - naveAltura - 10, naveLargura - 100, naveAltura);
+
+context.fillStyle = 'gray';
+
+context.fillRect(navePosicaoX + 20, canvas.height - naveAltura     , naveLargura - 50, naveAltura);
 
 context.beginPath();
 
-context.arc(bolaposicaoX, bolaposicaoY, bolaDiametro, 0, Math.PI * 2, true);
+context.fillStyle = 'red';
+
+context.arc(laserposicaoX, laserposicaoY, laserDiametro, 0, Math.PI * 2, true);
 
 context.fill();
 
@@ -102,11 +116,11 @@ context.fill();
 
 
 
-if( bolaposicaoY > (canvas.height) ){
+if( laserposicaoY > (canvas.height) ){
 
-	bolaposicaoY =  0;
+	laserposicaoY =  0;
 
-	bolaposicaoX = Math.random() * 900;
+	laserposicaoX = Math.random() * 900;
 
 	colisao = false;
 
@@ -114,9 +128,9 @@ if( bolaposicaoY > (canvas.height) ){
 }
 
 
-if(bolaposicaoY <=(canvas.height)){
+if(laserposicaoY <=(canvas.height)){
 
-bolaposicaoY+=velocidadejogador;
+laserposicaoY+=velocidade;
 
 time+=1;
 
@@ -125,7 +139,7 @@ time+=1;
 
 //Colisao
 
-if((bolaposicaoX > jogadorposicaoX && (bolaposicaoX < jogadorposicaoX + barraLargura)) && bolaposicaoY >= canvas.height && colisao == false){
+if((laserposicaoX > navePosicaoX && (laserposicaoX < navePosicaoX + naveLargura)) && laserposicaoY >= canvas.height && colisao == false){
 
 
 danosJogador++;
@@ -150,11 +164,11 @@ context.font = "20pt Calibri";
 
 context.fillStyle = 'red';
 
-context.fillText(" Danos: "+danosJogador, canvas.width - 850, 50);
+context.fillText("Danos X-Wing: "+danosJogador, canvas.width - 850, 50);
 
 context.fillStyle = 'blue';
 
-context.fillText("Tempo: "+time, canvas.width - 850, 80);
+context.fillText("       Tempo: "+time, canvas.width - 850, 80);
 
 }
 
