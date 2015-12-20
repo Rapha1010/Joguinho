@@ -14,19 +14,23 @@
 
 
 <body onload="inicializar()">
-<canvas id="canvas" width="600" height="500">
+<canvas id="canvas" width="900" height="500">
 Navegador não suporta
 </canvas>	
 <script type="text/javascript">
 
-var barraAltura, barraLargura, jogadorposicaoX, velocidadejogador, bolaDiametro,bolaposicaoX,bolaposicaoY,pontosJogador,colisao;
+var barraAltura, barraLargura, jogadorposicaoX, velocidadejogador, bolaDiametro,bolaposicaoX,bolaposicaoY,danosJogador,colisao, pause,time;
 
 function inicializar(){
 
 
+pause=false;
 barraAltura = 15;
 barraLargura = 200;
-pontosJogador = 0;
+danosJogador = 0;
+time=0;
+
+
 
 jogadorposicaoX = (canvas.width - barraLargura)/2;
 velocidadejogador =20;
@@ -35,7 +39,7 @@ canvas = document.getElementById("canvas");
 context = canvas.getContext("2d");
 
 bolaDiametro = 10;
-bolaposicaoX = Math.random() * 600;
+bolaposicaoX = Math.random() * 900;
 bolaposicaoY = 0;
 
 
@@ -58,10 +62,11 @@ if (jogadorposicaoX > 0){
     if(e.keyCode == 39)
     {	
 
-    	if (jogadorposicaoX < canvas.width - barraLargura){
+    	if (jogadorposicaoX < canvas.width - barraLargura + 25){
 
         jogadorposicaoX += velocidadejogador;
 	}
+
 
 }
 
@@ -70,7 +75,11 @@ if (jogadorposicaoX > 0){
 
 function gameLoop(){
 
+if(!pause){
+
 context.clearRect(0,0,canvas.width,canvas.height);
+
+context.fillStyle = 'blue';
 
 context.fillRect(jogadorposicaoX + 68, canvas.height - barraAltura - 70, barraLargura - 150, barraAltura);
 
@@ -91,21 +100,25 @@ context.fill();
 
 //Gravidade
 
+
+
 if( bolaposicaoY > (canvas.height) ){
 
 	bolaposicaoY =  0;
 
-	bolaposicaoX = Math.random() * 600;
+	bolaposicaoX = Math.random() * 900;
 
 	colisao = false;
 
-
+	
 }
 
 
 if(bolaposicaoY <=(canvas.height)){
 
 bolaposicaoY+=velocidadejogador;
+
+time+=1;
 
 
 }
@@ -115,16 +128,34 @@ bolaposicaoY+=velocidadejogador;
 if((bolaposicaoX > jogadorposicaoX && (bolaposicaoX < jogadorposicaoX + barraLargura)) && bolaposicaoY >= canvas.height && colisao == false){
 
 
-pontosJogador++;
+danosJogador++;
 
 colisao = true;
 
 } 
 
-context.font = "32pt Tahoma";
-context.color = "red";
+if (danosJogador == 5){
 
-context.fillText(pontosJogador, canvas.width - 70, 50);
+context.fillText("Game Over",450,250);
+
+danosJogador=0;
+
+pause=true;
+
+}
+
+}
+
+context.font = "20pt Calibri";
+
+context.fillStyle = 'red';
+
+context.fillText(" Danos: "+danosJogador, canvas.width - 850, 50);
+
+context.fillStyle = 'blue';
+
+context.fillText("Tempo: "+time, canvas.width - 850, 80);
+
 }
 
 
